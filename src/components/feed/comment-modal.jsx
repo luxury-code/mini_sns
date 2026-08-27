@@ -50,6 +50,7 @@ function CommentModal({ isOpen, post, currentUserId = null, onClose, onSubmit, o
       anchor="bottom"
       open={ isOpen }
       onClose={ onClose }
+      sx={ { zIndex: (theme) => theme.zIndex.modal + 10 } }
       slotProps={ {
         backdrop: {
           sx: { bgcolor: 'rgba(20, 12, 6, 0.55)', backdropFilter: 'blur(5px)' },
