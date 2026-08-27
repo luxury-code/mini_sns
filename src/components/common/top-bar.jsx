@@ -5,10 +5,19 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from '@mui/icons-material/LogoutOutlined';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import BrandLogo from './brand-logo';
 import { useAuth } from '../../hooks/use-auth';
+
+/** 상단바 오른쪽 아이콘 버튼 공통 스타일 (알림 · 로그아웃 동일 적용) */
+const ICON_BUTTON_SX = {
+  width: 40,
+  height: 40,
+  color: 'text.primary',
+  borderRadius: '50%',
+  '&:hover': { bgcolor: 'secondary.light', color: 'primary.main' },
+};
 
 /**
  * TopBar 컴포넌트 — 왼쪽 로고, 오른쪽 알림 · 로그아웃 아이콘
@@ -45,26 +54,22 @@ function TopBar({ notificationCount = 0 }) {
       <Toolbar sx={ { minHeight: 56, px: { xs: 2, md: 3 }, justifyContent: 'space-between' } }>
         <BrandLogo size={ 32 } />
 
-        <Box sx={ { display: 'flex', alignItems: 'center', gap: 0.25 } }>
+        <Box sx={ { display: 'flex', alignItems: 'center', gap: 0.5 } }>
           <Tooltip title="알림">
-            <IconButton
-              aria-label="알림"
-              onClick={ () => navigate('/notifications') }
-              sx={ { color: 'text.primary' } }
-            >
-              <Badge badgeContent={ notificationCount } color="primary">
-                <NotificationsNoneIcon />
+            <IconButton aria-label="알림" onClick={ () => navigate('/notifications') } sx={ ICON_BUTTON_SX }>
+              <Badge
+                badgeContent={ notificationCount }
+                color="primary"
+                sx={ { '& .MuiBadge-badge': { fontSize: '0.62rem', minWidth: 16, height: 16 } } }
+              >
+                <NotificationsNoneIcon sx={ { fontSize: 24 } } />
               </Badge>
             </IconButton>
           </Tooltip>
 
           <Tooltip title="로그아웃">
-            <IconButton
-              aria-label="로그아웃"
-              onClick={ handleLogout }
-              sx={ { color: 'text.secondary' } }
-            >
-              <LogoutIcon />
+            <IconButton aria-label="로그아웃" onClick={ handleLogout } sx={ ICON_BUTTON_SX }>
+              <LogoutIcon sx={ { fontSize: 24 } } />
             </IconButton>
           </Tooltip>
         </Box>
