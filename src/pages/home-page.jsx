@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -20,6 +21,7 @@ import { NOTIFICATIONS } from '../data/mock-data';
  * <Route path="/" element={ <HomePage /> } />
  */
 function HomePage() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { posts, isLoading, errorMessage, likedIds, toggleLike, addComment, removeComment } =
     usePostList(fetchFeedPosts);
@@ -53,6 +55,7 @@ function HomePage() {
             isLiked={ likedIds.has(post.id) }
             onToggleLike={ toggleLike }
             onOpenComments={ (target) => setSelectedPostId(target.id) }
+            onOpenDetail={ (target) => navigate(`/post/${target.id}`) }
           />
         )) }
       </Box>

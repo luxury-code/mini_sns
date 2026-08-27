@@ -120,3 +120,19 @@ export async function deleteComment(commentId) {
   const { error } = await supabase.from(TABLE.comments).delete().eq('id', commentId);
   if (error) throw error;
 }
+
+/**
+ * 게시물 1건 조회
+ * @param {number} postId - 게시물 id [Required]
+ * @returns {Promise<object>} 게시물
+ */
+export async function fetchPostById(postId) {
+  const { data, error } = await supabase
+    .from(TABLE.posts)
+    .select(POST_SELECT)
+    .eq('id', postId)
+    .single();
+
+  if (error) throw error;
+  return sortComments(data);
+}

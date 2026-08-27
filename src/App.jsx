@@ -9,11 +9,13 @@ import LoginPage from './pages/login-page';
 import MeetupPage from './pages/meetup-page';
 import MyPage from './pages/my-page';
 import NotificationPage from './pages/notification-page';
+import PostDetailPage from './pages/post-detail-page';
 import SignupPage from './pages/signup-page';
 
 /** 로그인이 필요한 페이지 목록 */
 const PRIVATE_ROUTES = [
   { path: '/', element: <HomePage /> },
+  { path: '/post/:postId', element: <PostDetailPage /> },
   { path: '/create', element: <CreatePostPage /> },
   { path: '/profile', element: <MyPage /> },
   { path: '/meetup', element: <MeetupPage /> },

@@ -19,12 +19,20 @@ import { formatRelativeTime } from '../../utils/format-date';
  * @param {boolean} isLiked - 내가 좋아요를 눌렀는지 여부 [Optional, 기본값: false]
  * @param {function} onToggleLike - 좋아요 버튼 클릭 시 실행 (postId 전달) [Optional]
  * @param {function} onOpenComments - 댓글 아이콘 클릭 시 실행 (post 전달) [Optional]
- * @param {boolean} isElevated - 카드 그림자/테두리 적용 여부 [Optional, 기본값: true]
+ * @param {function} onOpenDetail - 이미지 클릭 시 실행 (post 전달) [Optional]
+ * @param {boolean} isElevated - 카드 테두리 적용 여부 [Optional, 기본값: true]
  *
  * Example usage:
  * <PostCard post={ post } isLiked onToggleLike={ handleLike } onOpenComments={ handleOpen } />
  */
-function PostCard({ post, isLiked = false, onToggleLike, onOpenComments, isElevated = true }) {
+function PostCard({
+  post,
+  isLiked = false,
+  onToggleLike,
+  onOpenComments,
+  onOpenDetail,
+  isElevated = true,
+}) {
   const comments = post.comments ?? [];
   const latestComments = comments.slice(-2);
   const hashtagList = (post.hashtags ?? '')
@@ -35,7 +43,7 @@ function PostCard({ post, isLiked = false, onToggleLike, onOpenComments, isEleva
     <Card
       elevation={ 0 }
       sx={ {
-        borderRadius: isElevated ? 3 : 0,
+        borderRadius: 0,
         border: isElevated ? '1px solid' : 'none',
         borderColor: 'divider',
         bgcolor: 'background.paper',
@@ -66,8 +74,16 @@ function PostCard({ post, isLiked = false, onToggleLike, onOpenComments, isEleva
         </Box>
       </Box>
 
-      { /* 중단: 정방형 이미지 · 내용 · 작성 시간 */ }
-      <SquareImage src={ post.image_url } alt={ post.caption } fallbackSeed={ post.id } />
+      { /* 중단: 정방형 이미지(클릭 시 상세 페이지) · 내용 · 작성 시간 */ }
+      <Box
+        onClick={ () => onOpenDetail?.(post) }
+        sx={ {
+          cursor: onOpenDetail ? 'pointer' : 'default',
+          '&:hover': { opacity: onOpenDetail ? 0.92 : 1 },
+        } }
+      >
+        <SquareImage src={ post.image_url } alt={ post.caption } fallbackSeed={ post.id } />
+      </Box>
 
       <Box sx={ { px: 2, pt: 1.5, display: 'flex', flexDirection: 'column', gap: 1 } }>
         <Typography
@@ -94,6 +110,7 @@ function PostCard({ post, isLiked = false, onToggleLike, onOpenComments, isEleva
                   fontSize: '0.72rem',
                   fontWeight: 600,
                   height: 24,
+                  borderRadius: 0,
                 } }
               />
             )) }
@@ -116,7 +133,7 @@ function PostCard({ post, isLiked = false, onToggleLike, onOpenComments, isEleva
           alignItems: 'center',
           gap: 1,
           bgcolor: 'secondary.light',
-          borderRadius: 2,
+          borderRadius: 0,
         } }
       >
         <IconButton
