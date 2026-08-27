@@ -15,13 +15,16 @@ import PhotoLibraryOutlinedIcon from '@mui/icons-material/PhotoLibraryOutlined';
 import AppFrame from '../components/common/app-frame';
 import TopBar from '../components/common/top-bar';
 import CommentModal from '../components/feed/comment-modal';
-import PostCard from '../components/feed/post-card';
+import PostDetailView from '../components/feed/post-detail-view';
 import EmptyState from '../components/ui/empty-state';
 import SquareImage from '../components/ui/square-image';
 import { fetchUserPosts } from '../lib/sns-api';
 import { usePostList } from '../hooks/use-post-list';
 import { useAuth } from '../hooks/use-auth';
 import { NOTIFICATIONS } from '../data/mock-data';
+
+/** 하단바 높이 (모달이 하단바를 덮지 않도록 계산에 사용) */
+const BOTTOM_NAV_OFFSET = 'calc(62px + env(safe-area-inset-bottom))';
 
 /** 팔로우/팔로워 수는 DB 스키마에 없으므로 사용자 id 기반 목업 값으로 표시 */
 function getFollowCounts(userId) {
@@ -159,14 +162,22 @@ function MyPage() {
         open={ Boolean(detailPost) }
         onClose={ () => setDetailPostId(null) }
         slotProps={ {
-          backdrop: { sx: { bgcolor: 'rgba(20, 12, 6, 0.55)', backdropFilter: 'blur(5px)' } },
+          backdrop: {
+            sx: {
+              top: 0,
+              bottom: BOTTOM_NAV_OFFSET,
+              height: 'auto',
+              bgcolor: 'rgba(20, 12, 6, 0.55)',
+              backdropFilter: 'blur(6px)',
+            },
+          },
         } }
       >
         <Box
           sx={ {
             position: 'fixed',
             top: 0,
-            bottom: 62,
+            bottom: BOTTOM_NAV_OFFSET,
             left: '50%',
             transform: 'translateX(-50%)',
             width: '100%',
@@ -174,37 +185,46 @@ function MyPage() {
             bgcolor: 'background.default',
             display: 'flex',
             flexDirection: 'column',
+            overflow: 'hidden',
             outline: 'none',
           } }
         >
+          { /* 모달 헤더 — 제목과 닫기(X) 버튼 */ }
           <Box
             sx={ {
+              flexShrink: 0,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               px: 2,
               py: 1.25,
+              bgcolor: 'background.paper',
               borderBottom: '1px solid',
               borderColor: 'divider',
             } }
           >
-            <Typography sx={ { fontWeight: 700 } }>게시물</Typography>
-            <IconButton aria-label="닫기" onClick={ () => setDetailPostId(null) } size="small">
+            <Typography sx={ { fontWeight: 700, fontSize: '0.95rem' } }>게시물</Typography>
+            <IconButton
+              aria-label="닫기"
+              onClick={ () => setDetailPostId(null) }
+              sx={ {
+                color: 'text.primary',
+                '&:hover': { bgcolor: 'secondary.light', color: 'primary.main' },
+              } }
+            >
               <CloseIcon fontSize="small" />
             </IconButton>
           </Box>
 
-          <Box sx={ { flexGrow: 1, overflowY: 'auto' } }>
-            { detailPost && (
-              <PostCard
-                post={ detailPost }
-                isLiked={ likedIds.has(detailPost.id) }
-                onToggleLike={ toggleLike }
-                onOpenComments={ (target) => setCommentPostId(target.id) }
-                isElevated={ false }
-              />
-            ) }
-          </Box>
+          { /* 본문 — 남은 공간을 꽉 채우는 게시물 카드 UI */ }
+          { detailPost && (
+            <PostDetailView
+              post={ detailPost }
+              isLiked={ likedIds.has(detailPost.id) }
+              onToggleLike={ toggleLike }
+              onOpenComments={ (target) => setCommentPostId(target.id) }
+            />
+          ) }
         </Box>
       </Modal>
 
