@@ -10,19 +10,28 @@ import BottomNav from './bottom-nav';
  * @param {node} children - 페이지 본문 [Required]
  * @param {boolean} isBottomNavVisible - 하단바 표시 여부 [Optional, 기본값: true]
  * @param {node} footer - 하단바 대신 표시할 요소 [Optional, 기본값: null]
+ * @param {boolean} isFullHeight - 화면 높이에 딱 맞춰 스크롤 없이 표시할지 여부 [Optional, 기본값: false]
  *
  * Example usage:
  * <AppFrame header={ <TopBar /> }>{ content }</AppFrame>
  */
-function AppFrame({ header = null, children, isBottomNavVisible = true, footer = null }) {
+function AppFrame({
+  header = null,
+  children,
+  isBottomNavVisible = true,
+  footer = null,
+  isFullHeight = false,
+}) {
   return (
     <Box
       sx={ {
         width: '100%',
         minHeight: '100vh',
+        height: isFullHeight ? '100vh' : 'auto',
         display: 'flex',
         justifyContent: 'center',
         bgcolor: '#F5EFE9',
+        overflow: isFullHeight ? 'hidden' : 'visible',
       } }
     >
       <Paper
@@ -31,6 +40,7 @@ function AppFrame({ header = null, children, isBottomNavVisible = true, footer =
           width: '100%',
           maxWidth: 480,
           minHeight: '100vh',
+          height: isFullHeight ? '100vh' : 'auto',
           display: 'flex',
           flexDirection: 'column',
           bgcolor: 'background.default',
@@ -39,11 +49,20 @@ function AppFrame({ header = null, children, isBottomNavVisible = true, footer =
           borderColor: { sm: 'divider' },
           borderRadius: 0,
           position: 'relative',
+          overflow: isFullHeight ? 'hidden' : 'visible',
         } }
       >
         { header }
 
-        <Box component="main" sx={ { flexGrow: 1, display: 'flex', flexDirection: 'column' } }>
+        <Box
+          component="main"
+          sx={ {
+            flexGrow: 1,
+            minHeight: isFullHeight ? 0 : 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+          } }
+        >
           { children }
         </Box>
 
