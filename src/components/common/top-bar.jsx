@@ -5,12 +5,10 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import LogoutIcon from '@mui/icons-material/LogoutOutlined';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import BrandLogo from './brand-logo';
-import { useAuth } from '../../hooks/use-auth';
 
-/** 상단바 오른쪽 아이콘 버튼 공통 스타일 (알림 · 로그아웃 동일 적용) */
+/** 상단바 오른쪽 아이콘 버튼 공통 스타일 */
 const ICON_BUTTON_SX = {
   width: 40,
   height: 40,
@@ -20,7 +18,7 @@ const ICON_BUTTON_SX = {
 };
 
 /**
- * TopBar 컴포넌트 — 왼쪽 로고, 오른쪽 알림 · 로그아웃 아이콘
+ * TopBar 컴포넌트 — 왼쪽 로고, 오른쪽 알림 아이콘
  *
  * Props:
  * @param {number} notificationCount - 알림 배지 숫자 [Optional, 기본값: 0]
@@ -30,13 +28,6 @@ const ICON_BUTTON_SX = {
  */
 function TopBar({ notificationCount = 0 }) {
   const navigate = useNavigate();
-  const { logout } = useAuth();
-
-  /** 로그아웃 후 로그인 화면으로 이동 */
-  const handleLogout = () => {
-    logout();
-    navigate('/login', { replace: true });
-  };
 
   return (
     <AppBar
@@ -64,12 +55,6 @@ function TopBar({ notificationCount = 0 }) {
               >
                 <NotificationsNoneIcon sx={ { fontSize: 24 } } />
               </Badge>
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title="로그아웃">
-            <IconButton aria-label="로그아웃" onClick={ handleLogout } sx={ ICON_BUTTON_SX }>
-              <LogoutIcon sx={ { fontSize: 24 } } />
             </IconButton>
           </Tooltip>
         </Box>

@@ -1,13 +1,16 @@
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
+import LogoutIcon from '@mui/icons-material/LogoutOutlined';
 import PhotoLibraryOutlinedIcon from '@mui/icons-material/PhotoLibraryOutlined';
 import AppFrame from '../components/common/app-frame';
 import TopBar from '../components/common/top-bar';
@@ -36,7 +39,8 @@ function getFollowCounts(userId) {
  * <Route path="/profile" element={ <MyPage /> } />
  */
 function MyPage() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const loadMyPosts = useCallback(() => fetchUserPosts(user.id), [user.id]);
   const { posts, isLoading, errorMessage, likedIds, toggleLike, addComment, removeComment } =
@@ -48,6 +52,12 @@ function MyPage() {
   const detailPost = posts.find((post) => post.id === detailPostId) ?? null;
   const commentPost = posts.find((post) => post.id === commentPostId) ?? null;
   const followCounts = getFollowCounts(user?.id);
+
+  /** 로그아웃 후 로그인 화면으로 이동 */
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
 
   return (
     <AppFrame header={ <TopBar notificationCount={ NOTIFICATIONS.length } /> }>
@@ -90,6 +100,24 @@ function MyPage() {
             </Box>
           </Box>
         </Box>
+
+        <Button
+          variant="outlined"
+          color="primary"
+          fullWidth
+          startIcon={ <LogoutIcon /> }
+          onClick={ handleLogout }
+          sx={ {
+            mt: { xs: 2.5, md: 3 },
+            py: 1,
+            borderRadius: 2,
+            fontWeight: 700,
+            textTransform: 'none',
+            fontSize: { xs: '0.9rem', md: '0.95rem' },
+          } }
+        >
+          로그아웃
+        </Button>
       </Box>
 
       { /* 내 게시물 3열 그리드 */ }
