@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -9,10 +8,9 @@ import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
-import LogoutIcon from '@mui/icons-material/Logout';
 import PhotoLibraryOutlinedIcon from '@mui/icons-material/PhotoLibraryOutlined';
 import AppFrame from '../components/common/app-frame';
-import PageHeader from '../components/common/page-header';
+import TopBar from '../components/common/top-bar';
 import CommentModal from '../components/feed/comment-modal';
 import PostCard from '../components/feed/post-card';
 import EmptyState from '../components/ui/empty-state';
@@ -20,6 +18,7 @@ import SquareImage from '../components/ui/square-image';
 import { fetchUserPosts } from '../lib/sns-api';
 import { usePostList } from '../hooks/use-post-list';
 import { useAuth } from '../hooks/use-auth';
+import { NOTIFICATIONS } from '../data/mock-data';
 
 /** 팔로우/팔로워 수는 DB 스키마에 없으므로 사용자 id 기반 목업 값으로 표시 */
 function getFollowCounts(userId) {
@@ -37,8 +36,7 @@ function getFollowCounts(userId) {
  * <Route path="/profile" element={ <MyPage /> } />
  */
 function MyPage() {
-  const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   const loadMyPosts = useCallback(() => fetchUserPosts(user.id), [user.id]);
   const { posts, isLoading, errorMessage, likedIds, toggleLike, addComment, removeComment } =
@@ -51,26 +49,8 @@ function MyPage() {
   const commentPost = posts.find((post) => post.id === commentPostId) ?? null;
   const followCounts = getFollowCounts(user?.id);
 
-  /** 로그아웃 후 로그인 화면으로 이동 */
-  const handleLogout = () => {
-    logout();
-    navigate('/login', { replace: true });
-  };
-
   return (
-    <AppFrame
-      header={
-        <PageHeader
-          title="마이페이지"
-          onBack={ () => navigate('/') }
-          action={
-            <IconButton aria-label="로그아웃" onClick={ handleLogout } sx={ { color: 'text.secondary' } }>
-              <LogoutIcon fontSize="small" />
-            </IconButton>
-          }
-        />
-      }
-    >
+    <AppFrame header={ <TopBar notificationCount={ NOTIFICATIONS.length } /> }>
       { /* 프로필 영역 */ }
       <Box sx={ { px: { xs: 2, md: 3 }, py: { xs: 3, md: 4 } } }>
         <Box sx={ { display: 'flex', alignItems: 'center', gap: { xs: 2, md: 3 } } }>
