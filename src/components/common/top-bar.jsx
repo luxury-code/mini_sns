@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
+import ButtonBase from '@mui/material/ButtonBase';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
@@ -43,7 +44,18 @@ function TopBar({ notificationCount = 0 }) {
       } }
     >
       <Toolbar sx={ { minHeight: 56, px: { xs: 2, md: 3 }, justifyContent: 'space-between' } }>
-        <BrandLogo size={ 32 } />
+        <ButtonBase
+          aria-label="홈으로 이동"
+          onClick={ () => navigate('/') }
+          sx={ {
+            borderRadius: 2,
+            px: 0.5,
+            py: 0.25,
+            '&:hover': { bgcolor: 'secondary.light' },
+          } }
+        >
+          <BrandLogo size={ 32 } />
+        </ButtonBase>
 
         <Box sx={ { display: 'flex', alignItems: 'center', gap: 0.5 } }>
           <Tooltip title="알림">
