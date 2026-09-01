@@ -123,12 +123,12 @@ export const CHAT_MESSAGES = {
   ],
 };
 
-/** 알림 목록 */
+/** 알림 목록 (link: 알림 클릭 시 이동할 경로) */
 export const NOTIFICATIONS = [
-  { id: 1, type: 'like', actor: '김미식', text: '님이 회원님의 게시물을 좋아합니다.', time: '5분 전', seed: 'foodiekim' },
-  { id: 2, type: 'comment', actor: '이맵찔', text: '님이 댓글을 남겼습니다: "여기 저도 가봤어요!"', time: '20분 전', seed: 'spicylee' },
-  { id: 3, type: 'meetup', actor: '연남동 파스타 원정대', text: ' 모임이 1시간 뒤에 시작됩니다.', time: '1시간 전', seed: 'pasta' },
-  { id: 4, type: 'follow', actor: '박빵순', text: '님이 회원님을 팔로우하기 시작했습니다.', time: '3시간 전', seed: 'breadpark' },
-  { id: 5, type: 'like', actor: '맛잘알게스트', text: '님이 회원님의 게시물을 좋아합니다.', time: '어제', seed: 'guest' },
-  { id: 6, type: 'comment', actor: '김미식', text: '님이 댓글을 남겼습니다: "위치 좀 알려주세요"', time: '어제', seed: 'foodiekim' },
+  { id: 1, type: 'like', actor: '김미식', text: '님이 회원님의 게시물을 좋아합니다.', time: '5분 전', seed: 'foodiekim', link: '/profile' },
+  { id: 2, type: 'comment', actor: '이맵찔', text: '님이 댓글을 남겼습니다: "여기 저도 가봤어요!"', time: '20분 전', seed: 'spicylee', link: '/profile' },
+  { id: 3, type: 'meetup', actor: '연남동 파스타 원정대', text: ' 모임이 1시간 뒤에 시작됩니다.', time: '1시간 전', seed: 'pasta', link: '/chat/1' },
+  { id: 4, type: 'follow', actor: '박빵순', text: '님이 회원님을 팔로우하기 시작했습니다.', time: '3시간 전', seed: 'breadpark', link: '/profile' },
+  { id: 5, type: 'like', actor: '맛잘알게스트', text: '님이 회원님의 게시물을 좋아합니다.', time: '어제', seed: 'guest', link: '/profile' },
+  { id: 6, type: 'comment', actor: '김미식', text: '님이 댓글을 남겼습니다: "위치 좀 알려주세요"', time: '어제', seed: 'foodiekim', link: '/chat/2' },
 ];

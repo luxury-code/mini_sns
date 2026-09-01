@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import ButtonBase from '@mui/material/ButtonBase';
 import Divider from '@mui/material/Divider';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
@@ -35,13 +37,18 @@ function NotificationPage() {
 
           return (
             <Box key={ item.id }>
-              <Box
+              <ButtonBase
+                onClick={ () => navigate(item.link) }
                 sx={ {
+                  width: '100%',
                   display: 'flex',
                   alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  textAlign: 'left',
                   gap: 1.5,
                   px: { xs: 2, md: 3 },
                   py: 1.75,
+                  '&:hover': { bgcolor: 'secondary.light' },
                 } }
               >
                 <Box sx={ { position: 'relative', flexShrink: 0 } }>
@@ -79,7 +86,9 @@ function NotificationPage() {
                     { item.time }
                   </Box>
                 </Box>
-              </Box>
+
+                <ChevronRightIcon sx={ { fontSize: 20, color: 'text.secondary', flexShrink: 0 } } />
+              </ButtonBase>
 
               { index < NOTIFICATIONS.length - 1 && <Divider sx={ { mx: { xs: 2, md: 3 } } } /> }
             </Box>
