@@ -27,7 +27,7 @@ function MeetupCard({ meetup, onJoin }) {
       elevation={ 0 }
       sx={ {
         p: { xs: 2, md: 2.5 },
-        borderRadius: 3,
+        borderRadius: 0,
         border: '1px solid',
         borderColor: 'divider',
         bgcolor: 'background.paper',

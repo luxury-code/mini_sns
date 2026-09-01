@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -8,6 +7,7 @@ import AppFrame from '../components/common/app-frame';
 import TopBar from '../components/common/top-bar';
 import CommentModal from '../components/feed/comment-modal';
 import PostCard from '../components/feed/post-card';
+import PostDetailModal from '../components/feed/post-detail-modal';
 import EmptyState from '../components/ui/empty-state';
 import { fetchFeedPosts } from '../lib/sns-api';
 import { usePostList } from '../hooks/use-post-list';
@@ -21,13 +21,14 @@ import { NOTIFICATIONS } from '../data/mock-data';
  * <Route path="/" element={ <HomePage /> } />
  */
 function HomePage() {
-  const navigate = useNavigate();
   const { user } = useAuth();
   const { posts, isLoading, errorMessage, likedIds, toggleLike, addComment, removeComment } =
     usePostList(fetchFeedPosts);
   const [selectedPostId, setSelectedPostId] = useState(null);
+  const [detailPostId, setDetailPostId] = useState(null);
 
   const selectedPost = posts.find((post) => post.id === selectedPostId) ?? null;
+  const detailPost = posts.find((post) => post.id === detailPostId) ?? null;
 
   return (
     <AppFrame header={ <TopBar notificationCount={ NOTIFICATIONS.length } /> }>
@@ -55,10 +56,20 @@ function HomePage() {
             isLiked={ likedIds.has(post.id) }
             onToggleLike={ toggleLike }
             onOpenComments={ (target) => setSelectedPostId(target.id) }
-            onOpenDetail={ (target) => navigate(`/post/${target.id}`) }
+            onOpenDetail={ (target) => setDetailPostId(target.id) }
           />
         )) }
       </Box>
+
+      { /* 게시물 상세 전체화면 모달 (마이페이지와 동일한 UI) */ }
+      <PostDetailModal
+        isOpen={ Boolean(detailPost) }
+        post={ detailPost }
+        isLiked={ detailPost ? likedIds.has(detailPost.id) : false }
+        onClose={ () => setDetailPostId(null) }
+        onToggleLike={ toggleLike }
+        onOpenComments={ (target) => setSelectedPostId(target.id) }
+      />
 
       <CommentModal
         isOpen={ Boolean(selectedPost) }
